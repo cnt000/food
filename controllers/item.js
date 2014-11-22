@@ -9,7 +9,7 @@ exports.postItem = function(req, res) {
   // Set the item properties that came from the POST data
   item.name = req.body.name;
   item.item_type = req.body.item_type;
-  item.price = parseInt(req.body.price, 10);
+  item.price = parseFloat(req.body.price);
   item.userId = req.user._id || "";
   item.attributes = req.body.attributes;
 
