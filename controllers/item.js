@@ -11,7 +11,7 @@ exports.postItem = function(req, res) {
   item.item_type = req.body.item_type;
   item.price = parseInt(req.body.price, 10);
   item.userId = req.user._id || "";
-  item.attributes = (req.body.attributes !== "") ? req.body.attributes.split(",") : [];
+  item.attributes = req.body.attributes;
 
   // Save the item and check for errors
   item.save(function(err) {

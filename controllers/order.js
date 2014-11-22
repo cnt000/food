@@ -8,9 +8,9 @@ exports.postOrder = function(req, res) {
 
   // Set the order properties that came from the POST data
   order.cart_id = req.body.cart_id;
-  order.date = req.body.date || new Date();
-  order.orderDate = req.body.orderDate;
-  order.items = (req.body.items !== "") ? req.body.items.split(",") : [];
+  order.date = new Date();
+  order.orderDate = new Date(req.body.orderDate);
+  order.items = req.body.items;
   order.valid = true;
   order.userId = req.user._id;
 
