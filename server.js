@@ -73,12 +73,19 @@ router.route('/api/menu_entries')
   .post(authController.isAuthenticated, authController.needsGroup('operator'), menuEntryController.postMenuEntry)
   .get(authController.isAuthenticated, menuEntryController.getMenuEntries);
 
+// app.param('date', /^[0-9]+\-$/);
+
+router.route('/api/menu_entries/day/:date')
+  .get(authController.isAuthenticated, menuEntryController.getMenuEntriesByDate);
+
+router.route('/api/menu_entries/day/:date/:meal')
+  .get(authController.isAuthenticated, menuEntryController.getMenuEntriesByDateAndMeal);
+
 // Create endpoint handlers for /attributes/:attribute_id
 router.route('/api/menu_entries/:menu_entry_id')
   .get(authController.isAuthenticated, menuEntryController.getMenuEntry)
   .put(authController.isAuthenticated, authController.needsGroup('operator'), menuEntryController.putMenuEntry)
   .delete(authController.isAuthenticated, authController.needsGroup('operator'), menuEntryController.deleteMenuEntry);
-
 
 // Create endpoint handlers for /attributes
 router.route('/api/attributes')

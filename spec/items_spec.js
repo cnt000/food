@@ -7,23 +7,27 @@ var item2 = {
           "attributes": [ "carne", "farina", "uova", "parmigiano" ]
         };
 
+var server = "http://localhost:3000/";
+var baseRoute = "api";
+var basePath = server+baseRoute;
 var addedMessage =  "Item added to the db!";
 var deletedMessage = "Item removed from the db!";
-
-var testId = "5470befb8b70a6301de03e79";
 
 // Global setup for all tests
 frisby.globalSetup({
   request: {
-    headers:{'Accept': 'application/json'},
+    headers:{
+      'Accept': 'application/json',
+      'Authorization': 'Bearer KzESxGzBK8oBHuu54dybD8WJ9SUaJsXolQ6N7Aggwo2w2TeqLZH9QufEHKbaBmbB5qaWWNghBx456WDm4VeAB66ibkvmD2nYi2KG4cL65ZeyDiO1qN4d5L0vlxlwZVEJhHdDzs7Lv9v2O1cb7EkMyKHrDzofMhtzSraCaLu8PVEbqW8GnJCdtB4duTIPWv2nhsW4Rusr11f8CVcMDVs1uLTw42J6LL148aJfQjDFeAqhekhX6rKkZd1pFldmaQzG'
+    },
     inspectOnFailure: true
   }
 });
 
 //GET ITEMS
 frisby.create('Get Items')
-  .get('http://localhost:3000/api/items')
-  .auth('edo', 'edo')
+  .get(basePath+'/items')
+  // .auth('edo', 'edo')
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSONTypes('0', {
@@ -37,15 +41,7 @@ frisby.create('Get Items')
 
 //POST ITEM
 frisby.create('Post Item')
-  .post('http://localhost:3000/api/items',
-        item2,
-        {
-            json: true,
-            headers: {
-                "content-type": "application/json"
-            }
-        })
-  .auth('edo', 'edo')
+  .post(basePath+'/items', item2)
   .expectStatus(200)
   .expectHeaderContains('content-type', 'application/json')
   .expectJSON({
@@ -54,10 +50,10 @@ frisby.create('Post Item')
    })
   // .inspectJSON(function(json) {})
   .afterJSON(function(json) {
+
     //GET ITEM
     frisby.create('Get Item')
-      .get('http://localhost:3000/api/items/'+json.data._id)
-      .auth('edo', 'edo')
+      .get(basePath+'/items/'+json.data._id)
       .expectStatus(200)
       .expectHeaderContains('content-type', 'application/json')
       .expectJSONTypes('0', {
@@ -67,37 +63,25 @@ frisby.create('Post Item')
         attributes: function(val) { expect(val).toBeTypeOrNull(Array); }, // Custom matcher callback
         userId: String
       })
-      .expectJSON('0', {
-        name: item2.name,
-        item_type: item2.item_type,
-        price: item2.price,
-        attributes: item2.attributes
-      })
-      // PUT ITEM
-      frisby.create('Put Item')
-        .put('http://localhost:3000/api/items/'+json.data._id,
-              { "price": 12.99 },
-              {
-                  json: true,
-                  headers: {
-                      "content-type": "application/json"
-                  }
-              })
-        .auth('edo', 'edo')
-        .expectStatus(200)
-        .expectHeaderContains('content-type', 'application/json')
-      .toss();
+      .expectJSON('0', item2)
+    .toss();
 
-      // DELETE ITEM
-      frisby.create('Delete Item')
-        .delete('http://localhost:3000/api/items/'+json.data._id)
-        .auth('edo', 'edo')
-        .expectStatus(200)
-        .expectHeaderContains('content-type', 'application/json')
-        .expectJSON({
-           message: deletedMessage
-         })
-      .toss();
+    // PUT ITEM
+    frisby.create('Put Item')
+      .put(basePath+'/items/'+json.data._id, { "price": 12.99 })
+      .expectStatus(200)
+      .expectHeaderContains('content-type', 'application/json')
+    .toss();
+
+    // DELETE ITEM
+    frisby.create('Delete Item')
+      .delete(basePath+'/items/'+json.data._id)
+      .expectStatus(200)
+      .expectHeaderContains('content-type', 'application/json')
+      .expectJSON({
+         message: deletedMessage
+       })
+    .toss();
 
     })
 .toss();

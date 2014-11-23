@@ -10,6 +10,7 @@ exports.postItem = function(req, res) {
   item.name = req.body.name;
   item.item_type = req.body.item_type;
   item.price = parseFloat(req.body.price);
+  item.photo = req.body.photo || "";
   item.userId = req.user._id || "";
   item.attributes = req.body.attributes;
 
@@ -48,7 +49,10 @@ exports.getItem = function(req, res) {
 // Create endpoint /api/items/:item_id for PUT
 exports.putItem = function(req, res) {
   // Use the Item model to find a specific item
-  Item.update({ _id: req.params.item_id }, { price: req.body.price }, function(err, num, raw) {
+  Item.update({ _id: req.params.item_id }, 
+    { 
+      price: req.body.price 
+    }, function(err, num, raw) {
     if (err)
       res.send(err);
 

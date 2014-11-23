@@ -8,7 +8,7 @@ exports.postMenuEntry = function(req, res) {
 
   // Set the menuEntry properties that came from the POST data
   menuEntry.item = req.body.item;
-  menuEntry.date = req.body.date;
+  menuEntry.date = new Date(req.body.date);
   menuEntry.meal = req.body.meal || "";
   menuEntry.userId = req.user._id || "";
   menuEntry.outofstock = req.body.outofstock || false;
@@ -33,6 +33,27 @@ exports.getMenuEntries = function(req, res) {
     res.json(menuEntries);
   });
 };
+
+// Create endpoint /api/menu_entries/day/:date for GET
+exports.getMenuEntriesByDate = function(req, res) {
+  MenuEntry.find({ date: { $gte: req.params.date, $lt: new Date(new Date(req.params.date).getTime() + 24*60*60*1000) } }, function(err, menuEntries) {
+    if (err)
+      res.send(err);
+
+    res.json(menuEntries);
+  });
+};
+
+// Create endpoint /api/menu_entries/day/:date/:meal for GET
+exports.getMenuEntriesByDateAndMeal = function(req, res) {
+  MenuEntry.find({ meal: req.params.meal, date: { $gte: req.params.date, $lt: new Date(new Date(req.params.date).getTime() + 24*60*60*1000) } }, function(err, menuEntries) {
+    if (err)
+      res.send(err);
+
+    res.json(menuEntries);
+  });
+};
+
 
 // Create endpoint /api/menu_entries/:menu_entry_id for GET
 exports.getMenuEntry = function(req, res) {

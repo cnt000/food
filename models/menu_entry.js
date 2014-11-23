@@ -3,8 +3,16 @@ var mongoose = require('mongoose');
 
 var MenuEntrySchema   = new mongoose.Schema({
   item: {
-    type: String,
-    required: true
+    name: {
+      type: String,
+      unique: true,
+      required: true
+    },
+	item_type: String,
+	price: Number,
+	userId: String,
+	attributes: Array,
+	photo: String
   },
   date: Date,
   meal: String,
