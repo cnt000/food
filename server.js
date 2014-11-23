@@ -43,6 +43,8 @@ app.use(passport.initialize());
 // Create our Express router
 var router = express.Router();
 
+// app.param('date', /^[0-9]+\-$/);
+
 // Create endpoint handlers for /orders
 router.route('/api/orders')
   .post(authController.isAuthenticated, orderController.postOrder)
@@ -68,12 +70,12 @@ router.route('/api/carts/:cart_id')
 router.route('/api/carts/user/:cart_id')
   .get(authController.isAuthenticated, cartController.getUserCart);
 
+// ====================================================================================================================
+
 // Create endpoint handlers for /attributes
 router.route('/api/menu_entries')
   .post(authController.isAuthenticated, authController.needsGroup('operator'), menuEntryController.postMenuEntry)
   .get(authController.isAuthenticated, menuEntryController.getMenuEntries);
-
-// app.param('date', /^[0-9]+\-$/);
 
 router.route('/api/menu_entries/day/:date')
   .get(authController.isAuthenticated, menuEntryController.getMenuEntriesByDate);
@@ -109,6 +111,7 @@ router.route('/api/items/:item_id')
   .put(authController.isAuthenticated, authController.needsGroup('operator'), itemController.putItem)
   .delete(authController.isAuthenticated, authController.needsGroup('operator'), itemController.deleteItem);
 
+// ====================================================================================================================
 
 // Create endpoint handlers for /users
 router.route('/api/users')
