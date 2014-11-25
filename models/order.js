@@ -14,7 +14,8 @@ var OrderSchema   = new mongoose.Schema({
   note: String,
   confirmed: Boolean,
   closed: Boolean,
-  valid: Boolean
+  valid: Boolean,
+  total: Number
 });
 
 // Export the Mongoose model

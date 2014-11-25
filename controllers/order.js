@@ -12,7 +12,11 @@ exports.postOrder = function(req, res) {
   order.orderDate = new Date(req.body.orderDate);
   order.items = req.body.items;
   order.valid = true;
+  order.note = req.body.note;
+  order.total = parseFloat(req.body.total);
   order.userId = req.user._id;
+  order.confirmed = req.body.confirmed;
+  order.closed = req.body.closed;
 
   // Save the order and check for errors
   order.save(function(err) {

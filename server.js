@@ -115,7 +115,7 @@ router.route('/api/items/:item_id')
 
 // Create endpoint handlers for /users
 router.route('/api/users')
-  //.post(userController.postUser)
+  .post(userController.postUser, authController.needsGroup('operator'))
   .get(authController.isAuthenticated, authController.needsGroup('operator'), userController.getUsers);
 
 // Create endpoint handlers for /clients

@@ -1,5 +1,6 @@
 var frisby = require('frisby');
 
+describe("/items", function() {
 var item2 = { 
           "price": 7.99,
           "item_type": "primo piatto",
@@ -85,3 +86,5 @@ frisby.create('Post Item')
 
     })
 .toss();
+
+});
