@@ -54,6 +54,26 @@ exports.getMenuEntriesByDateAndMeal = function(req, res) {
   });
 };
 
+// Create endpoint /api/menu_entries/date/:date_from/:date_to for GET
+exports.getMenuEntriesByDateInterval = function(req, res) {
+  MenuEntry.find({ date: { $gte: req.params.date_from, $lte: new Date(new Date(req.params.date_to).getTime() + 24*60*60*1000) } }, function(err, menuEntries) {
+    if (err)
+      res.send(err);
+
+    res.json(menuEntries);
+  });
+};
+
+// Create endpoint /api/menu_entries/date/:date_from/:date_to/:meal for GET
+exports.getMenuEntriesByDateIntervalAndMeal = function(req, res) {
+  MenuEntry.find({ meal: req.params.meal, date: { $gte: req.params.date_from, $lte: new Date(new Date(req.params.date_to).getTime() + 24*60*60*1000)  } }, function(err, menuEntries) {
+    if (err)
+      res.send(err);
+
+    res.json(menuEntries);
+  });
+};
+
 
 // Create endpoint /api/menu_entries/:menu_entry_id for GET
 exports.getMenuEntry = function(req, res) {

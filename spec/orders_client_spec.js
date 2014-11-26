@@ -3,7 +3,7 @@ var frisby = require('frisby');
 describe("/orders client", function() {
 
   var order2 = { 
-            cart_id: "54675e8cccabc69141ca2903"+Math.random()*1000,
+            cart_id: "54675e8cccabc69141ca2903",
             orderDate: "2014-10-24T22:00:00.000Z",
             items: [
               {
@@ -107,7 +107,26 @@ describe("/orders client", function() {
             closed: Boolean,
             valid: Boolean
         })
-        .expectJSON('0', order2)
+        .expectJSON('*', order2)
+      .toss();
+
+      //GET USER ORDER
+      frisby.create('Get Order')
+        .get(basePath+'/orders/user/list/all')
+        .expectStatus(200)
+        .expectHeaderContains('content-type', 'application/json')
+        .expectJSONTypes('0', {
+            cart_id: String,
+            date: String,
+            orderDate: String,
+            items: function(val) { expect(val).toBeTypeOrNull(Array); },
+            userId: String,
+            note: String,
+            confirmed: Boolean,
+            closed: Boolean,
+            valid: Boolean
+        })
+        .expectJSON('*', order2)
       .toss();
 
       // PUT ORDER

@@ -61,8 +61,19 @@ exports.putOrder = function(req, res) {
   });
 };
 
+// Create endpoint /api/orders/user for GET
+exports.getOrdersUser = function(req, res) {
+  // Use the Order model to find all order
+  Order.find(function(err, orders) {
+    if (err)
+      res.send(err);
+
+    res.json(orders);
+  });
+};
+
 // Create endpoint /api/orders/user/:order_id for GET
-exports.getUserOrder = function(req, res) {
+exports.getOrderUser = function(req, res) {
   // Use the Order model to find a specific cart
   Order.find({ _id: req.params.order_id, userId: req.user._id }, function(err, cart) {
     if (err)

@@ -55,8 +55,11 @@ router.route('/api/orders/:order_id')
   .get(authController.isAuthenticated, authController.needsGroup('operator'), orderController.getOrder)
   .put(authController.isAuthenticated, authController.needsGroup('operator'), orderController.putOrder);
 
+router.route('/api/orders/user/list/all')
+  .get(authController.isAuthenticated, orderController.getOrdersUser);
+
 router.route('/api/orders/user/:order_id')
-  .get(authController.isAuthenticated, orderController.getUserOrder);
+  .get(authController.isAuthenticated, orderController.getOrderUser);
 
 // Create endpoint handlers for /carts
 router.route('/api/carts')
@@ -82,6 +85,12 @@ router.route('/api/menu_entries/day/:date')
 
 router.route('/api/menu_entries/day/:date/:meal')
   .get(authController.isAuthenticated, menuEntryController.getMenuEntriesByDateAndMeal);
+
+router.route('/api/menu_entries/date/:date_from/:date_to')
+  .get(authController.isAuthenticated, menuEntryController.getMenuEntriesByDateInterval);
+
+router.route('/api/menu_entries/date/:date_from/:date_to/:meal')
+  .get(authController.isAuthenticated, menuEntryController.getMenuEntriesByDateIntervalAndMeal);
 
 // Create endpoint handlers for /attributes/:attribute_id
 router.route('/api/menu_entries/:menu_entry_id')
@@ -110,6 +119,7 @@ router.route('/api/items/:item_id')
   .get(authController.isAuthenticated, authController.needsGroup('operator'), itemController.getItem)
   .put(authController.isAuthenticated, authController.needsGroup('operator'), itemController.putItem)
   .delete(authController.isAuthenticated, authController.needsGroup('operator'), itemController.deleteItem);
+
 
 // ====================================================================================================================
 
