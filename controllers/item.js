@@ -1,18 +1,15 @@
 // Load required packages
 var Item = require('../models/item');
+var Item = require('../models/attribute');
+
 
 // Create endpoint /api/items for POST
 exports.postItem = function(req, res) {
   // Create a new instance of the Item model
-  var item = new Item();
+  var item = new Item(req.body);
 
-  // Set the item properties that came from the POST data
-  item.name = req.body.name;
-  item.item_type = req.body.item_type;
-  item.price = parseFloat(req.body.price);
   item.photo = req.body.photo || "";
   item.userId = req.user._id || "";
-  item.attributes = req.body.attributes;
 
   // Save the item and check for errors
   item.save(function(err) {
@@ -21,6 +18,25 @@ exports.postItem = function(req, res) {
 
 
     res.json({ message: 'Item added to the db!', data: item });
+  });
+};
+
+exports.postItemAttribute = function(req, res, next) {
+
+  var attribute = new Attribute(req.body);
+  attribute.item = req.item_id;
+
+  attribute.save(function(err, attribute){
+
+    if(err){ return next(err); }
+
+    req.item.attributes.push(attribute);
+    req.item.save(function(err, attribute) {
+
+      if(err){ return next(err); }
+
+      res.json(attribute);
+    });
   });
 };
 

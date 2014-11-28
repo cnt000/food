@@ -10,7 +10,7 @@ var ItemSchema   = new mongoose.Schema({
   item_type: String,
   price: Number,
   userId: String,
-  attributes: Array,
+  attributes: { type: mongoose.Schema.Types.ObjectId, ref: 'Attributes' },
   photo: String
 });
 

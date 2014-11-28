@@ -9,7 +9,8 @@ var AttributeSchema   = new mongoose.Schema({
   },
   attribute_type: {
     type: String
-  }
+  },
+  item: { type: mongoose.Schema.Types.ObjectId, ref: 'Items' }
 });
 
 module.exports = mongoose.model('Attribute', AttributeSchema);

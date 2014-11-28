@@ -114,6 +114,9 @@ router.route('/api/items')
   .post(authController.isAuthenticated, authController.needsGroup('operator'), itemController.postItem)
   .get(authController.isAuthenticated, authController.needsGroup('operator'), itemController.getItems);
 
+router.route('/api/items/:item_id/attributes')
+  .post(authController.isAuthenticated, authController.needsGroup('operator'), itemController.postItemAttribute);
+
 // Create endpoint handlers for /items/:item_id
 router.route('/api/items/:item_id')
   .get(authController.isAuthenticated, authController.needsGroup('operator'), itemController.getItem)
